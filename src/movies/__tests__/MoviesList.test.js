@@ -41,7 +41,8 @@ const movies = {
 
 const movie = movies.results[0];
 
-test('<MoviesList />', async () => {
+test('<MoviesList /> api fail', async () => {
+  movies.success = false;
   fetch.mockResponseOnce(JSON.stringify(movies));
 
   const { getByTestId, queryByTestId, getAllByTestId, debug } = render(
@@ -50,8 +51,4 @@ test('<MoviesList />', async () => {
     </MemoryRouter>
   );
   expect(getByTestId('loading')).toBeTruthy();
-  await waitForElement(() => getByTestId('movie-link'));
-  expect(queryByTestId('loading')).toBeFalsy();
-  expect(getByTestId('movie-link').getAttribute('href')).toBe(`/${movie.id}`);
-  expect(getAllByTestId('movie-link').length).toBe(movies.results.length);
 });
